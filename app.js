@@ -4,7 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
-const port = 3000;
+const encrypt = require("mongoose-encryption");
 
 const app = express();
 
@@ -24,10 +24,12 @@ mongoose.connect("mongodb://localhost:27017/userDB",
   useUnifiedTopology: true
 });
 
-const userSchema = {
+const userSchema = new mongoose.Schema ({
   email: String,
   password: String
-};
+});
+
+const secret = "Thisisourlittlesecret.";
 
 const User = new mongoose.model("User", userSchema);
 
@@ -95,7 +97,7 @@ app.post("/login", function(req, res)
 });
 
 
-
+const port = 3000;
 app.listen(port, () =>
 {
   console.log(`Example app listening at http://localhost:${port}`)
